@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
+import FormTemplateList from './pages/FormTemplateList.jsx'
+import FormBuilder from './pages/FormBuilder.jsx';
 function App() {
 
 
@@ -23,7 +25,8 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/about' element={<About />} />
-
+                    <Route path='/form-templates' element={<FormTemplateList />} />
+                    <Route path='form-builder' element={<FormBuilder />} />
                 </Routes>
             </Container>
           </Box>
