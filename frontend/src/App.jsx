@@ -16,7 +16,8 @@ function App() {
                       application
                   </Typography>
                   <Button color='inherit' component={Link} to='/'>Home</Button>
-                  <Button color='inherit' component={Link} to='/about'>About</Button>
+                  <Button color='inherit' component={Link} to='/form-templates'>Template</Button>
+                  <Button color='inherit' component={Link} to='/form-builder'>Builder</Button>
               </Toolbar>
           </AppBar>
 
