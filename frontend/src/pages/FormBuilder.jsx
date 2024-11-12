@@ -12,6 +12,7 @@ import {
     Typography,
     Stack
 } from '@mui/material';
+import { getFormTemplates, createFormTemplate, updateFormTemplate, deleteFormTemplate } from '../services/formTemplateService';
 
 
 function FormBuilder() {
@@ -27,8 +28,10 @@ function FormBuilder() {
     };
 
     return (
-        <Box sx={{justifyContent: 'center', alignItems: 'center', marginTop: 5}}>
-            <Typography variant='overline' sx={{fontSize: '1rem'}}>
+        <Box
+            component='form'
+            sx={{justifyContent: 'center', alignItems: 'center', marginTop: 5}}>
+            <Typography variant='overline' sx={{fontSize: '1rem', textAlign: 'center'}}>
                 Form Builder
             </Typography>
             <Stack direction='column' spacing={2}>
