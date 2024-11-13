@@ -7,9 +7,9 @@ const formTemplateSchema = new mongoose.Schema({
     },
     fields: [
         {
-            label: String,
-            type: String,
-            required: Boolean,
+            label: { type: String, required: true },
+            type: { type: String, required: true },
+            isRequired: { type: Boolean, required: false },
             options: [String]
         },
     ],
