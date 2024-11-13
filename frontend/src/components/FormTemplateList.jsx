@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
 import {
     Box,
     List,
@@ -19,8 +20,8 @@ import {
     TableRow,
     TableContainer
 } from '@mui/material';
-import { getFormTemplates, createFormTemplate } from '../services/formTemplateService';
-
+import { getFormTemplates, createFormTemplate } from '../services/formTemplateService.jsx';
+import FormRenderer from './FormRenderer.jsx';
 
 function FormTemplateList() {
     const [templates, setTemplates] = useState([]);
@@ -29,8 +30,18 @@ function FormTemplateList() {
     const [fieldLabel, setFieldLabel] = useState('');
     const [fieldType, setFieldType] = useState('text');
     const [fieldRequired, setFieldRequired] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
+    const navigate = useNavigate();
 
+    const handleUseTemplate = (template) => {
+        // setSelectedTemplate(template)
+        navigate(`/form/${template._id}`);
+    }
 
+    const handleFormInstance = (formData) => {
+        console.log('form submission data: ', formData);
+        setSelectedTemplate(null)
+    }
 
     const handleAddField = async (e) => {
         if(fieldLabel.trim()) {
@@ -48,7 +59,7 @@ function FormTemplateList() {
     };
 
     const handleCreateTemplate = async (e) => {
-        if (newTemplateName.trim()) {  // Ensure a template name is provided
+        if (newTemplateName.trim()) {
             const newTemplate = {
                 name: newTemplateName,
                 fields: fields,
@@ -65,14 +76,27 @@ function FormTemplateList() {
         }
     };
 
+
+    const handleFormSubmit = async (formData) => {
+        try {
+            await fetch('/api/form-response/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ templateId, formData})
+            })
+            console.log('form submitted successfully')
+            setSelectedTemplate(null)
+        } catch (error) {
+            console.error('error submitting form: ', error)
+        }
+    }
+
     const fetchTemplates = async () => {
         try {
             const data = await getFormTemplates();
-            console.log('Data fetched from API in fetchTemplates:', data); // Log entire response
-            console.log('Extracted templates:', data.templates); // Log extracted templates array
-
             setTemplates(Array.isArray(data.templates) ? data.templates : []);
-            console.log('Templates state after setting:', templates); // Check templates state immediately after setting
         } catch (error) {
             console.error('Error fetching templates:', error);
         }
@@ -82,13 +106,8 @@ function FormTemplateList() {
         fetchTemplates();
     }, [])
 
-    useEffect(() => {
-        console.log('updated templates state: ', templates)
-    }, [templates]);
-
-    console.log('templates to render:', templates)
     return (
-        <Box sx={{ justifyContent: 'center', marginTop: 5, textAlign: 'center'}}>
+        <Box sx={{ justifyContent: 'center', marginTop: 5, marginBottom: 10, textAlign: 'center'}}>
             <Typography variant='overline' sx={{fontSize: '1rem', marginBottom: 5}}>
                 create form template
             </Typography>
@@ -169,6 +188,12 @@ function FormTemplateList() {
                     templates.map((template) => (
                         <Box key={template._id} sx={{ border: '1px solid #ddd', padding: 2, borderRadius: 1 }}>
                             <Typography variant="h6">{template.name}</Typography>
+                            <Button variant='outlined' onClick={() => handleUseTemplate(template)}>
+                                use template
+                            </Button>
+                            {selectedTemplate && selectedTemplate._id === template._id && (
+                                <FormRenderer template={selectedTemplate} onSubmit={handleFormInstance} />
+                            )}
                             <List>
                                 {Array.isArray(template.fields) && template.fields.map((field) => (
                                     <ListItem key={field._id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>

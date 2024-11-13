@@ -39,13 +39,9 @@ exports.getFormTemplate = async (req, res) => {
         const {id} = req.params;
         const formTemplate = await FormTemplate.findById(id);
         if(!formTemplate){
-            return res.send({
-                message: 'Form not Found'
-            })
+           return res.status(404).json({ message: 'form not found' })
         }
-        return res.send({
-            formTemplate,
-        })
+        return res.send(formTemplate)
 
     } catch (error) {
         res.send({
