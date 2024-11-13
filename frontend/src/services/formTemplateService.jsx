@@ -9,8 +9,7 @@ export const getFormTemplates = async () => {
             return { templates: [] }; // Default to an object with an empty array
         }
         const data = await response.json();
-        console.log('Raw API data:', data); // Confirm raw API response here
-        return data; // Return full object with `templates` array
+        return data;
     } catch (error) {
         console.error('Error getting all templates', error);
         return { templates: [] }; // Default response if an error occurs
@@ -34,19 +33,25 @@ export const createFormTemplate = async (template) => {
         return response.json();
     } catch (error) {
         console.error('Error creating form template:', error);
-        throw error; // Throw the error to be handled in the calling component
+        throw error;
     }
 };
 
+export const getFormTemplateById = async (id) => {
+    try {
+        const response = await fetch(`${API_URL}/${id}`)
+        if(!response.ok) throw new Error('failed to fetch template');
+        return await response.json();
+    } catch (error) {
+        console.error('error fetching template by id', error);
+        throw error;
+    }
+}
 
 
 
 // not used yet
 /*
-export const getFormTemplateId = async (id) => {
-    const response = await fetch(`${API_URL}/${id}`);
-    return response.json();
-}
 
 export const updateFormTemplate = async (id, updates) => {
     const response = await fetch(`${API_URL}/${id}`, {
