@@ -9,11 +9,10 @@ connectDB();
 
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/form-template', formTemplate);
+app.use('/api/template', formTemplate);
 
 
 app.listen(PORT, () => {

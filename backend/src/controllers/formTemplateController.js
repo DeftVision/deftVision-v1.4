@@ -1,17 +1,17 @@
 const FormTemplate = require('../models/formTemplateModel');
-const res = require("express/lib/response");
+
 
 
 exports.createFormTemplate = async (req, res) => {
     try {
         const formTemplate = new FormTemplate(req.body);
         await formTemplate.save();
-        res.send({
+        res.status(201).json({
             message: 'Successfully created form',
             formTemplate
         })
     } catch (error) {
-        res.send({
+        res.status(400).json({
             message: 'Error creating formTemplate',
             error: error.message
         })
@@ -20,18 +20,14 @@ exports.createFormTemplate = async (req, res) => {
 
 exports.getFormTemplates = async (req, res) => {
     try {
-        const template = await FormTemplate.find({})
-        if(!template){
-            return res.send({
-                message: 'Forms not Found'
-            })
-        }
-        res.send({
-            message: 'Successfully retrieved form templates',
-            template
+        const templates = await FormTemplate.find({})
+
+        res.status(200).json({
+            template_count: templates.length,
+            templates
         })
     } catch (error) {
-        res.send({
+        res.status(500).json({
             message: 'Error getting formTemplates',
             error: error.message
         })
@@ -63,7 +59,7 @@ exports.updateFormTemplate = async (req, res) => {
     try {
         const {id} = req.params;
         const template = req.body;
-        const formTemplate = await FormTemplate.findByIdAndUpdate(id, template,{ new: true});
+        const formTemplate = await FormTemplate.findByIdAndUpdate(id, template,{ new: true });
         if(!formTemplate){
             return res.send({
                 message: 'Template not found.'

@@ -3,7 +3,9 @@ import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import FormTemplateList from './pages/FormTemplateList.jsx'
-import FormBuilder from './pages/FormBuilder.jsx';
+
+
+
 function App() {
 
 
@@ -17,7 +19,7 @@ function App() {
                   </Typography>
                   <Button color='inherit' component={Link} to='/'>Home</Button>
                   <Button color='inherit' component={Link} to='/form-templates'>Template</Button>
-                  <Button color='inherit' component={Link} to='/form-builder'>Builder</Button>
+
               </Toolbar>
           </AppBar>
 
@@ -27,7 +29,6 @@ function App() {
                     <Route path='/' element={<Home />} />
                     <Route path='/about' element={<About />} />
                     <Route path='/form-templates' element={<FormTemplateList />} />
-                    <Route path='form-builder' element={<FormBuilder />} />
                 </Routes>
             </Container>
           </Box>
